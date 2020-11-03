@@ -109,7 +109,7 @@ def wiener_iter(x, sr, wind, hop, nfft, noise=None, zphase=True, iters=3,
     """
     # Form the constant complex exponential matrix here for efficiency
     _exp_mat = np.exp(-1j*(2*np.pi)/nfft*np.outer(np.arange(
-        lpc_order+1), np.arange(nfft//2+1)))
+        lpc_order), np.arange(nfft//2+1)))
 
     # Basically copy from stft code to prevent redundant processing
     fsize = len(wind)
@@ -120,7 +120,7 @@ def wiener_iter(x, sr, wind, hop, nfft, noise=None, zphase=True, iters=3,
     if noise is None:
         npsd = stpsd(x, wind, hop, nfft, nframes=6)
     else:
-        npsd = stpsd(noise, wind, hop, nfft, nframes=-1)
+        npsd = stpsd(noise, wind, hop, nfft, nframes=0)
 
     def wiener_iter_frame(frame):
         """One frame of Wiener iterative filtering."""
@@ -188,7 +188,7 @@ def asnr(x, sr, wind, hop, nfft, noise=None, zphase=True, snrsmooth=.98,
     if noise is None:
         npsd = stpsd(x, wind, hop, nfft, nframes=6)
     else:
-        npsd = stpsd(noise, wind, hop, nfft, nframes=-1)
+        npsd = stpsd(noise, wind, hop, nfft, nframes=0)
 
     xfilt = []  # holds Wiener-filtered output
     vad = []  # holds voice activity decision
